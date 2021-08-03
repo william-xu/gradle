@@ -47,27 +47,38 @@ public interface BuildLifecycleController extends Stoppable {
     GradleInternal getConfiguredBuild();
 
     /**
-     * Adds requested tasks, as defined in the {@link org.gradle.StartParameter}, and their dependencies to the work graph for this build. Configures the build, if necessary.
+     * Prepares this build to schedule tasks. May configure the build, if required to later schedule the requested tasks. Can be called multiple times.
+     */
+    void prepareToScheduleTasks();
+
+    /**
+     * Adds requested tasks, as defined in the {@link org.gradle.StartParameter}, and their dependencies to the work graph for this build.
+     * Must call {@link #prepareToScheduleTasks()} prior to calling this method.
      */
     void scheduleRequestedTasks();
 
     /**
      * Populates the work graph of this build.
+     * Must call {@link #prepareToScheduleTasks()} prior to calling this method.
      */
     void populateWorkGraph(Consumer<? super TaskExecutionGraphInternal> action);
 
+    void finalizeWorkGraph(boolean workScheduled);
+
     /**
      * Executes the tasks scheduled for this build. Does not automatically configure the build or schedule any tasks.
+     * Must call {@link #prepareToScheduleTasks()} and optionally any of {@link #scheduleRequestedTasks()} or {@link #populateWorkGraph(Consumer)} prior to calling this method.
      */
-    void executeTasks();
+    ExecutionResult<Void> executeTasks();
 
     /**
      * Calls the `buildFinished` hooks and other user code clean up.
      * Failures to finish the build are passed to the given consumer rather than thrown.
      *
      * @param failure The build failure that should be reported to the buildFinished hooks. When null, this launcher may use whatever failure it has already collected.
+     * @return a result containing any failures that happen while finishing the build.
      */
-    void finishBuild(@Nullable Throwable failure, Consumer<? super Throwable> collector);
+    ExecutionResult<Void> finishBuild(@Nullable Throwable failure);
 
     /**
      * <p>Adds a listener to this build instance. Receives events for this build only.

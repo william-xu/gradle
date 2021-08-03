@@ -21,7 +21,7 @@ val jacksonVersion = "2.12.1"
 val jaxbVersion = "3.0.0"
 val jettyVersion = "9.4.36.v20210114"
 val mavenVersion = "3.6.3"
-val nativePlatformVersion = "0.22-milestone-17"
+val nativePlatformVersion = "0.22-milestone-18"
 val slf4jVersion = "1.7.30"
 val sshdVersion = "2.0.0" // Upgrade requires changes in package names and tests fail on expectations (but work otherwise)
 val tomljVersion = "1.0.0"
@@ -43,9 +43,10 @@ dependencies {
         api(libs.awsS3S3)               { version { strictly(awsS3Version) }}
         api(libs.awsS3Sts)              { version { strictly(awsS3Version) }}
         api(libs.bouncycastlePgp)       { version { strictly(bouncycastleVersion) }}
-        api(libs.bouncycastlePkix)       { version { strictly(bouncycastleVersion) }}
+        api(libs.bouncycastlePkix)      { version { strictly(bouncycastleVersion) }}
         api(libs.bouncycastleProvider)  { version { strictly(bouncycastleVersion) }}
         api(libs.bsh)                   { version { strictly("2.0b6") }}
+        api(libs.capsule)               { version { strictly("0.6.3") }}
         api(libs.commonsCodec)          { version { strictly("1.15") }}
         api(libs.commonsCompress)       { version { strictly("1.20") }}
         api(libs.commonsHttpclient)     { version { strictly("4.5.13") }}
@@ -58,7 +59,7 @@ dependencies {
         api(libs.googleHttpClient)      { version { strictly(googleApiVersion); because("our GCS version requires 1.25.0") }}
         api(libs.googleHttpClientJackson2) { version { strictly(googleApiVersion); because("our GCS version requires 1.25.0") }}
         api(libs.googleOauthClient)     { version { strictly(googleApiVersion); because("our GCS version requires 1.25.0") }}
-        api(libs.gradleProfiler)        { version { strictly("0.17.0-alpha05") }}
+        api(libs.gradleProfiler)        { version { strictly("0.17.0-alpha07") }}
         api(libs.groovy)                { version { strictly(libs.groovyVersion) }}
         api(libs.groovyAnt)             { version { strictly(libs.groovyVersion) }}
         api(libs.groovyAstbuilder)      { version { strictly(libs.groovyVersion) }}

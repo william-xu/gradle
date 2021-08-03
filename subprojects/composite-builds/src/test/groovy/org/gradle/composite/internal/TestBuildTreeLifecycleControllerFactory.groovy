@@ -55,10 +55,11 @@ class TestBuildTreeLifecycleControllerFactory implements BuildTreeLifecycleContr
 
         @Override
         void scheduleAndRunTasks() {
+            targetBuild.prepareToScheduleTasks()
             targetBuild.scheduleRequestedTasks()
-            def failures = []
-            workExecutor.execute({ failures.add(it) })
-            buildTreeFinishExecutor.finishBuildTree(failures, { throw it })
+            def result = workExecutor.execute()
+            buildTreeFinishExecutor.finishBuildTree(result.failures)
+            result.rethrow()
         }
 
         @Override
@@ -70,7 +71,7 @@ class TestBuildTreeLifecycleControllerFactory implements BuildTreeLifecycleContr
             } catch (Throwable t) {
                 failures.add(t)
             }
-            buildTreeFinishExecutor.finishBuildTree(failures, { throw it })
+            buildTreeFinishExecutor.finishBuildTree(failures)
             return result
         }
     }

@@ -32,6 +32,7 @@ import org.gradle.internal.build.BuildLifecycleControllerFactory;
 import org.gradle.internal.build.BuildState;
 import org.gradle.internal.build.BuildWorkGraph;
 import org.gradle.internal.build.DefaultBuildWorkGraph;
+import org.gradle.internal.build.ExecutionResult;
 import org.gradle.internal.build.IncludedBuildState;
 import org.gradle.internal.buildtree.BuildTreeState;
 import org.gradle.internal.composite.IncludedBuildInternal;
@@ -41,7 +42,6 @@ import org.gradle.internal.service.scopes.BuildScopeServices;
 import org.gradle.util.Path;
 
 import java.io.File;
-import java.util.function.Consumer;
 
 public class DefaultIncludedBuild extends AbstractCompositeParticipantBuildState implements IncludedBuildState, Stoppable {
     private final BuildIdentifier buildIdentifier;
@@ -74,7 +74,7 @@ public class DefaultIncludedBuild extends AbstractCompositeParticipantBuildState
         this.projectStateRegistry = projectStateRegistry;
         BuildScopeServices buildScopeServices = new BuildScopeServices(buildTree.getServices());
         // Use a defensive copy of the build definition, as it may be mutated during build execution
-        this.buildLifecycleController = buildLifecycleControllerFactory.newInstance(buildDefinition.newInstance(), this, owner.getMutableModel(), buildScopeServices);
+        this.buildLifecycleController = buildLifecycleControllerFactory.newInstance(buildDefinition.newInstance(), this, owner, buildScopeServices);
         this.workGraph = new DefaultBuildWorkGraph(buildLifecycleController.getGradle().getTaskGraph(), projectStateRegistry, buildLifecycleController);
         this.model = instantiator.newInstance(IncludedBuildImpl.class, this);
     }
@@ -193,8 +193,8 @@ public class DefaultIncludedBuild extends AbstractCompositeParticipantBuildState
     }
 
     @Override
-    public void finishBuild(Consumer<? super Throwable> collector) {
-        buildLifecycleController.finishBuild(null, collector);
+    public ExecutionResult<Void> finishBuild() {
+        return buildLifecycleController.finishBuild(null);
     }
 
     @Override

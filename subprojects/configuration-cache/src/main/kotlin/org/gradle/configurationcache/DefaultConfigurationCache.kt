@@ -64,7 +64,7 @@ class DefaultConfigurationCache internal constructor(
 
         val currentBuild: VintageGradleBuild
 
-        fun createBuild(rootProjectName: String): ConfigurationCacheBuild
+        fun createBuild(settingsFile: File?, rootProjectName: String): ConfigurationCacheBuild
 
         fun <T> service(serviceType: Class<T>): T
 
@@ -109,7 +109,7 @@ class DefaultConfigurationCache internal constructor(
         rootBuild = host
     }
 
-    override fun loadOrScheduledRequestedTasks(scheduler: () -> Unit) {
+    override fun loadOrScheduleRequestedTasks(scheduler: () -> Unit) {
         if (canLoad) {
             loadWorkGraph()
         } else {
