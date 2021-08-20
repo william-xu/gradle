@@ -50,6 +50,7 @@ abstract class AbstractExtractCodeQualityBuildScanData : DefaultTask() {
 
     @TaskAction
     fun action() {
+        if (true) throw IllegalStateException()
         println("buildScan: $buildScanExt")
         if (buildScanExt == null) return
         val basePath = rootDir.get().asFile
