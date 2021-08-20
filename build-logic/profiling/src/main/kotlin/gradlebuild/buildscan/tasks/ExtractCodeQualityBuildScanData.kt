@@ -20,6 +20,7 @@ import com.gradle.scan.plugin.BuildScanExtension
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.logging.Logging
 import org.gradle.api.specs.Specs
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
@@ -50,13 +51,13 @@ abstract class AbstractExtractCodeQualityBuildScanData : DefaultTask() {
 
     @TaskAction
     fun action() {
-        if (true) throw IllegalStateException()
-        println("buildScan: $buildScanExt")
+        val logger = Logging.getLogger(javaClass)
+        logger.info("buildScan: $buildScanExt")
         if (buildScanExt == null) return
         val basePath = rootDir.get().asFile
-        println("xmls: ${xmlOutputs.files}")
+        logger.info("xmls: ${xmlOutputs.files}")
         xmlOutputs.files.filter { it.exists() }.forEach { xmlFile ->
-            println("Extracting: $xmlFile")
+            logger.info("Extracting: $xmlFile")
             extractIssuesFrom(xmlFile, basePath).forEach { issue ->
                 buildScanExt?.value(buildScanValueName, issue)
             }
