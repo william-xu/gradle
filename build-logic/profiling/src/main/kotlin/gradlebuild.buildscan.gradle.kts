@@ -155,6 +155,9 @@ fun extractCheckstyleAndCodenarcData() {
         tasks.withType<Checkstyle>().configureEach {
             finalizedBy(extractCheckstyleBuildScanData)
             extractCheckstyleBuildScanData {
+                doFirst {
+                    debug()
+                }
                 reports.xml.outputLocation.orNull?.let { xmlOutputs.from(it.asFile) }
             }
         }

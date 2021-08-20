@@ -49,6 +49,15 @@ abstract class AbstractExtractCodeQualityBuildScanData : DefaultTask() {
         outputs.upToDateWhen(Specs.SATISFIES_NONE)
     }
 
+    fun debug() {
+        val logger = Logging.getLogger(javaClass)
+        logger.info("buildScan: $buildScanExt")
+        logger.info("xmls: ${xmlOutputs.files}")
+        xmlOutputs.files.filter { it.exists() }.forEach { xmlFile ->
+            logger.info("Extracting: $xmlFile")
+        }
+    }
+
     @TaskAction
     fun action() {
         val logger = Logging.getLogger(javaClass)
