@@ -50,9 +50,12 @@ abstract class AbstractExtractCodeQualityBuildScanData : DefaultTask() {
 
     @TaskAction
     fun action() {
+        println("buildScan: $buildScanExt")
         if (buildScanExt == null) return
         val basePath = rootDir.get().asFile
+        println("xmls: ${xmlOutputs.files}")
         xmlOutputs.files.filter { it.exists() }.forEach { xmlFile ->
+            println("Extracting: $xmlFile")
             extractIssuesFrom(xmlFile, basePath).forEach { issue ->
                 buildScanExt?.value(buildScanValueName, issue)
             }
