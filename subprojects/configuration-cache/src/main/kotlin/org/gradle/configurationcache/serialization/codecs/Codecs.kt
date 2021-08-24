@@ -206,6 +206,7 @@ class Codecs(
         bind(TaskInAnotherBuildCodec(includedTaskGraph))
         bind(DelegatingCodec<TransformationNode>(userTypesCodec))
         bind(ActionNodeCodec(userTypesCodec))
+        bind(OrdinalNodeCodec())
 
         bind(DefaultResolvableArtifactCodec(calculatedValueContainerFactory))
 
