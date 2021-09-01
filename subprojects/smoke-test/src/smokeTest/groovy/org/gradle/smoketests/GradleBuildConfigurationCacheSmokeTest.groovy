@@ -96,6 +96,7 @@ class GradleBuildConfigurationCacheSmokeTest extends AbstractGradleceptionSmokeT
         assertTestClassExecutedIn "subprojects/configuration-cache", "org.gradle.configurationcache.ConfigurationCacheDebugLogIntegrationTest"
     }
 
+    @Ignore
     def "can run Gradle cross-version tests with configuration cache enabled"() {
 
         given:
@@ -121,6 +122,7 @@ class GradleBuildConfigurationCacheSmokeTest extends AbstractGradleceptionSmokeT
         result.task(":configuration-cache:embeddedCrossVersionTest").outcome == TaskOutcome.SUCCESS
     }
 
+    @Ignore
     def "can run Gradle smoke tests with configuration cache enabled"() {
 
         given:
@@ -146,6 +148,7 @@ class GradleBuildConfigurationCacheSmokeTest extends AbstractGradleceptionSmokeT
         result.task(":smoke-test:smokeTest").outcome == TaskOutcome.SUCCESS
     }
 
+    @Ignore
     def "can run Gradle soak tests with configuration cache enabled"() {
 
         given:
@@ -171,6 +174,7 @@ class GradleBuildConfigurationCacheSmokeTest extends AbstractGradleceptionSmokeT
         result.task(":soak:forkingIntegTest").outcome == TaskOutcome.SUCCESS
     }
 
+    @Ignore
     def "can run Gradle codeQuality with configuration cache enabled"() {
 
         given:
@@ -199,6 +203,7 @@ class GradleBuildConfigurationCacheSmokeTest extends AbstractGradleceptionSmokeT
     }
 
     @NotYetImplemented
+    @Ignore
     def "can run Gradle checkBinaryCompatibility with configuration cache enabled"() {
 
         given:
@@ -221,6 +226,7 @@ class GradleBuildConfigurationCacheSmokeTest extends AbstractGradleceptionSmokeT
         result.task(":architecture-test:checkBinaryCompatibility").outcome == TaskOutcome.SUCCESS
     }
 
+    @Ignore
     def "can build and install Gradle binary distribution with configuration cache enabled"() {
 
         given:

@@ -17,7 +17,9 @@
 package org.gradle.smoketests
 
 import org.gradle.testkit.runner.TaskOutcome
+import spock.lang.Ignore
 
+@Ignore
 class GradleBuildSmokeTest extends AbstractGradleceptionSmokeTest {
 
     def "can build Gradle distribution"() {

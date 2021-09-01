@@ -61,7 +61,8 @@ val propagatedEnvironmentVariables = listOf(
 
     // Used by performance test to recognize TeamCity buildId
     "BUILD_ID",
-    "JPROFILER_HOME"
+    "JPROFILER_HOME",
+    "GRADLE_ENTERPRISE_ACCESS_KEY"
 )
 
 
