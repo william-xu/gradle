@@ -37,7 +37,6 @@ import spock.lang.Ignore
     GradleContextualExecuter.isNotConfigCache() && GradleBuildJvmSpec.isAvailable()
 })
 class GradleBuildConfigurationCacheSmokeTest extends AbstractGradleceptionSmokeTest {
-
     def setup() {
         // Generate Kotlin DSL sources once so they are included as :kotlin-dsl:compileKotlin inputs.
         // TODO:configuration-cache handle generated sources better (see gradlebuild.kotlin-dsl-dependencies-embedded.gradle.kts:39)
