@@ -98,8 +98,8 @@ class PathNormalizationStrategyTest extends Specification {
         (getAllFilesToFingerprint(strategy.directorySensitivity) - emptyRootDir - resources).each { file ->
             assert fingerprints[file] == file.name
         }
-        fingerprints[emptyRootDir] == rootDirectoryFingerprintFor(strategy.directorySensitivity)
-        fingerprints[resources] == rootDirectoryFingerprintFor(strategy.directorySensitivity)
+        fingerprints[emptyRootDir] == null
+        fingerprints[resources] == null
 
         where:
         strategy << [
@@ -120,7 +120,7 @@ class PathNormalizationStrategyTest extends Specification {
         fingerprints[resources.file(subDirB)]       == directoryFingerprintFor(subDirB, strategy.directorySensitivity)
         fingerprints[resources.file(fileInSubdirB)] == fileInSubdirB
         fingerprints[emptyRootDir]                  == null
-        fingerprints[missingFile]                   == missingFile.name
+        fingerprints[missingFile]                   == null
 
         where:
         strategy << [
@@ -159,9 +159,10 @@ class PathNormalizationStrategyTest extends Specification {
 
     List<File> getAllFilesToFingerprint(DirectorySensitivity directorySensitivity) {
         def dirs = [emptyRootDir, resources.file(subDirA), resources.file(subDirB), resources]
-        def files = [jarFile1, jarFile2, missingFile, resources.file(fileInRoot), resources.file(fileInSubdirA), resources.file(fileInSubdirB)]
+        def files = [jarFile1, jarFile2, resources.file(fileInRoot), resources.file(fileInSubdirA), resources.file(fileInSubdirB)]
+        def missingFiles = [missingFile]
 
-        return directorySensitivity == DirectorySensitivity.DEFAULT ? (dirs + files) : files
+        return directorySensitivity == DirectorySensitivity.DEFAULT ? (dirs + files + missingFiles) : files
     }
 
     protected TestFile file(String... path) {
