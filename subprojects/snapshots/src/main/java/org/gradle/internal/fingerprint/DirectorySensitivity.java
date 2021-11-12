@@ -16,6 +16,7 @@
 
 package org.gradle.internal.fingerprint;
 
+import org.gradle.internal.file.FileMetadata;
 import org.gradle.internal.file.FileType;
 import org.gradle.internal.snapshot.FileSystemLocationSnapshot;
 
@@ -33,7 +34,7 @@ public enum DirectorySensitivity {
     /**
      * Ignore directories
      */
-    IGNORE_DIRECTORIES(snapshot -> snapshot.getType() == FileType.RegularFile),
+    IGNORE_DIRECTORIES(snapshot -> snapshot.getType() == FileType.RegularFile || isBrokenSymlink(snapshot)),
     /**
      * Used to denote that no directory sensitivity has been specified explicitly.
      *
@@ -47,6 +48,9 @@ public enum DirectorySensitivity {
     });
 
     private final Predicate<FileSystemLocationSnapshot> fingerprintCheck;
+    private static boolean isBrokenSymlink(FileSystemLocationSnapshot snapshot) {
+        return snapshot.getType() == FileType.Missing && snapshot.getAccessType() == FileMetadata.AccessType.VIA_SYMLINK;
+    }
 
     DirectorySensitivity(Predicate<FileSystemLocationSnapshot> fingerprintCheck) {
         this.fingerprintCheck = fingerprintCheck;
