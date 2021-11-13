@@ -16,6 +16,13 @@
 
 package org.gradle.configurationcache
 
+import org.gradle.api.InvalidUserCodeException
+import org.gradle.configuration.internal.UserCodeApplicationContext
+import org.gradle.configurationcache.problems.DocumentationSection
+import org.gradle.configurationcache.problems.ProblemsListener
+import org.gradle.configurationcache.problems.PropertyProblem
+import org.gradle.configurationcache.problems.StructuredMessage
+import org.gradle.configurationcache.problems.location
 import org.gradle.configurationcache.serialization.Workarounds
 import org.gradle.internal.classpath.Instrumented
 import org.gradle.internal.event.ListenerManager
@@ -60,7 +67,9 @@ val allowedProperties = setOf(
 
 @ServiceScope(Scopes.BuildTree::class)
 class InstrumentedInputAccessListener(
-    listenerManager: ListenerManager
+    private val problems: ProblemsListener,
+    private val userCodeContext: UserCodeApplicationContext,
+    listenerManager: ListenerManager,
 ) : Instrumented.Listener {
 
     private
@@ -78,5 +87,15 @@ class InstrumentedInputAccessListener(
             return
         }
         broadcast.envVariableRead(key, value, consumer)
+    }
+
+    override fun externalProcessStarted(command: String, consumer: String?) {
+        // Starting external process is always an error because the configuration cache cannot fingerprint it in general.
+        val message = StructuredMessage.build {
+            text("external process started ")
+            reference(command)
+        }
+        val exception = InvalidUserCodeException(message.toString())
+        problems.onProblem(PropertyProblem(userCodeContext.location(consumer), message, exception, DocumentationSection.RequirementsUndeclaredExternalProcessUse))
     }
 }

@@ -43,6 +43,8 @@ enum class DocumentationSection(val anchor: String) {
     RequirementsUndeclaredGradlePropRead("config_cache:requirements:undeclared_gradle_prop_read"),
     RequirementsUndeclaredSysPropRead("config_cache:requirements:undeclared_sys_prop_read"),
     RequirementsUndeclaredEnvVarRead("config_cache:requirements:undeclared_env_var_read"),
+    // TODO(mlopatkin): Write this section in the doc
+    RequirementsUndeclaredExternalProcessUse("config_cache:requirements:undeclared_external_process_use"),
     RequirementsUseProjectDuringExecution("config_cache:requirements:use_project_during_execution")
 }
 
